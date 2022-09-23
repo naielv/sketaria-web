@@ -17,12 +17,9 @@ export default function Home() {
         <Header title="Sketaria Web" />
         <hr />
         <p className="description">
-          Here's an example of a Netlify Form! When you fill this out, the
-          submissions can be found in the Netlify Admin site.
+          Sitio web para los trámites del ayuntamiento de Sketaria.
         </p>
         <LoginBtn />
-        <FeedbackForm />
-        <JokeBlock />
       </main>
       <Footer />
     </div>
