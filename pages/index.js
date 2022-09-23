@@ -1,27 +1,52 @@
-import Head from "next/head";
-import Header from "@components/Header";
-import Footer from "@components/Footer";
-import FeedbackForm from "@components/FeedbackForm";
-import JokeBlock from "@components/JokeBlock";
-import LoginBtn from "@components/login-btn";
+import { useState, useEffect } from 'react'
+import { supabase } from '../utils/supabaseClient'
+import Auth from '../components/Auth'
+import Account from '../components/Account'
 
 export default function Home() {
-  return (
-    <div className="container">
-      <Head>
-        <title>Sketaria Web</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+  const [isLoading, setIsLoading] = useState(true)
+  const [session, setSession] = useState(null)
 
-      <main>
-        <Header title="Sketaria Web" />
-        <hr />
-        <p className="description">
-          Sitio web para los trámites del ayuntamiento de Sketaria.
-        </p>
-        <LoginBtn />
-      </main>
-      <Footer />
+  useEffect(() => {
+    let mounted = true
+
+    async function getInitialSession() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      // only update the react state if the component is still mounted
+      if (mounted) {
+        if (session) {
+          setSession(session)
+        }
+
+        setIsLoading(false)
+      }
+    }
+
+    getInitialSession()
+
+    const { subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session)
+      }
+    )
+
+    return () => {
+      mounted = false
+
+      subscription?.unsubscribe()
+    }
+  }, [])
+
+  return (
+    <div className="container" style={{ padding: '50px 0 100px 0' }}>
+      {!session ? (
+        <Auth />
+      ) : (
+        <Account key={session.user.id} session={session} />
+      )}
     </div>
-  );
+  )
 }
