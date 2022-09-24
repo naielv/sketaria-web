@@ -1,5 +1,5 @@
 import { supabase } from '../utils/supabaseClient'
-import useState from "react"
+import { useState } from "react"
 
 export default function Auth() {
   const [username, setUsername] = useState('')
@@ -22,16 +22,16 @@ export default function Auth() {
           type="text"
           className="m-2 outline-none py-2 px-4 border-2 border-black-200 rounded focus:border-blue-400 text-black-300 text-xl"
           placeholder="Your Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
 
         <input
           type="text"
           className="m-2 outline-none py-2 px-4 border-2 border-black-200 rounded focus:border-blue-400 text-black-300 text-xl"
           placeholder="Your Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <button className="m-1 p-2 bg-green-500 text-white font-medium text-xl grid place-items-center rounded">
           Submit
